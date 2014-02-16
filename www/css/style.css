@@ -1,0 +1,10 @@
+.dice{
+	background: #fff;
+	content: "";
+	width: 34px;
+	height: 34px;
+}
+
+.dice.btn-info{
+	background: #46b8da;
+}
