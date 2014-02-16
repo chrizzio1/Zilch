@@ -1,0 +1,612 @@
+/* Mobile Optimizations */
+
+*, body {
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	-webkit-overflow-scrolling: touch;
+	margin: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+a, input, button {
+    -ms-touch-action: none !important;
+}
+
+
+#doc-dashboard li a:hover, #doc-dashboard li a:hover span{
+	background: none!important;
+	color: inherit!important;
+}
+
+#doc-dashboard .dropdown-menu.unex li a:hover span{
+	color: #999!important;
+}
+
+#doc-dashboard .dropdown-menu.unex li a:active,#doc-dashboard .dropdown-menu.unex li a:active span{
+	background: #ee7500!important;	
+	color: #FFF!important;
+}
+
+
+table{
+	max-width: 100%;
+}
+
+table .profile-pic-td, .avatar {
+	width: 40px;
+}
+
+td.profile-pic-td{
+	padding: 3px;
+}
+
+table .name-td {
+	max-width: 15%;	
+}
+
+.page{
+	width: 100%;
+	margin: 0 auto;
+	top: 0;
+}
+
+.notification {
+	padding: 5px 0;
+	display: inline-block;
+}
+
+/* Header */
+
+.sticky-wrapper{
+	width: 100%;
+	margin-bottom: 25px;
+}
+
+/* Login */
+.page-login {
+	padding: 5px 0px;
+	margin: 10px;
+	margin-top: 15px;
+	max-width: 100%;
+}
+
+form#login-form .login-screen-submit input[type=submit] {
+padding: 10px 30px;
+margin: 7px 0 5px 0;
+}
+
+/* Logo */
+.sticky-wrapper #header-v3,.sticky-wrapper{
+	height: auto!important;
+	margin-bottom: 0;
+}
+
+#header-v3 .logo{
+	text-align: center;
+	
+}
+
+#header-v3 .logo img{
+	max-width: 319px;
+}
+
+.sticky-wrapper #header-v3 .logo {
+	margin-top: 15px;
+}
+
+h1.logo {
+	text-align: center;
+}
+h1.logo a {
+	background-image: url('/wp/wp-content/uploads/2014/01/TEGO-CLASS-Logo-Transparent-beta2.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	display: block;
+	height: 29px;
+	width: 319px;
+	margin: 0 auto;
+}
+
+
+
+
+
+.nav-tabs > li {
+	margin-bottom: -6px;
+}
+
+textarea#editor{
+	width: 100%!important;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;	
+	min-height: 50px;
+}
+
+button.close{margin-left: 5px;}
+
+.btn-upload-files{
+	color: #fff;
+}
+
+.page{
+	background: none;
+}
+
+.mobile-content{
+	margin: auto;
+	background-color: #FFF;
+	border-radius: 6px;
+	position: relative;
+	padding: 5px 5px 10px 5px;
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+
+/* PREPEND CUSTOM */ 
+.subject-block-level{
+  display: table;
+  width: 100%;
+}
+
+.subject-block-level .add-on{
+  display: table-cell;
+  width: 29px;  
+}
+
+.subject-block-level #current-subject{
+	box-sizing: border-box;
+	display: table-cell;
+	width: 100%;
+	font-size: 15px;
+	height: 35px;
+}
+
+.dropdown-subjects{
+	max-width: 100%;
+	width: 100%;
+	margin-top: 40px;
+}
+
+.dropdown-menu li > a {
+	display: block;
+	padding: 10px 20px;
+}
+
+.daterange-container {
+	padding: 10px;
+	width: 100%!important;
+	margin-top: -10px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+#daterange{
+	max-width: 100%!important;
+	width: 97%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+
+.navbar {
+	margin: 0;
+}
+
+.navbar .btn-navbar {
+display: block!important;
+}
+
+
+.navbar-inner {
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	padding: 0;
+
+}
+
+
+
+.navbar-inner .btn-navbar {
+margin: 0;
+padding: 17px;
+}
+
+.nav-collapse .nav{
+	background: #272727;
+}
+
+/* Class-Filter Sidebar */
+.sidebar-class ul li {
+	border-bottom: 1px solid #EBEBEB;
+}
+
+.sidebar-class ul li.active {
+	background-color: #E6E6E6;
+}
+
+.slider-content{
+	margin-bottom: 50px;
+}
+
+.modal-backdrop{
+	z-index: -9999;
+
+}
+
+.modal-backdrop.fade.in{
+	opacity: 0.6;
+	filter: alpha(opacity=60);
+	z-index: 1040;
+	overflow: hidden;
+	position: fixed;
+}
+
+.sidr{
+    display: none;
+    position: absolute;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    z-index: 999999;
+    width: 260px;
+    overflow-x: none;
+    overflow-y: auto;
+    font-size: 15px;
+    padding: 10px;
+    background: #F5F5F5;
+	box-shadow: 0px 5px 11px 1px rgba(51, 51, 51, 0.45);
+
+}
+
+.sidr .sidr-inner {
+    padding: 0 0 15px;
+}
+
+.sidr .sidr-inner>p {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.sidr.right {
+    left: auto;
+    right: -260px;
+}
+
+.sidr.left {
+    left: -260px;
+    right: auto;
+}
+
+
+/* Main Navbar */
+#yw0{
+	margin: 0;
+	display: inline-block;
+	text-align: center;
+	line-height: 0;
+}
+
+#yw0 li{
+	list-style-type: none;
+	display: inline-block;
+}
+
+#yw0 li a {
+	text-decoration: none;
+	display: block;
+	margin: 0;
+	color: #FFF;
+	line-height: 13px;
+	font-size: 13px;
+	padding: 9px 16px;
+
+}
+
+#yw0 li a .batch{
+	display: block;
+	height: 26px;
+	width: 30px;
+	text-align: center;
+	margin: 0 auto;
+	background: #fff;
+}
+
+
+/* Sprites für Header */
+.head-icon {
+	display: block;
+	height: 30px;
+	width: 30px;
+	background: url(../img/head-icons.png) no-repeat;
+}
+
+
+.absences-icon{
+	background-position: -35px 0;
+	width: 30px;
+	height: 30px;
+}
+
+.doku-icon{
+	background-position: 0 0;
+	width: 30px;
+	height: 30px;
+}
+
+.grades-icon{
+	background-position: -70px 0;
+	width: 30px;
+	height: 30px;
+}
+
+#yw0 li a.active,#yw0 li a:active{
+	background-color: #555!important;
+}
+
+
+#current-subject .menu-caret{
+	margin-top:4px;
+	opacity:0.3;
+	float: right;
+}
+
+/* Grades */
+.knob{
+	margin-right: 10px;
+	float: left;
+}
+
+.knobs-subjects:hover, .knobs-subjects-all:hover{
+	background: none;
+}
+
+h4.header{
+	text-align: center;
+}
+
+.sidr .modal-header,.sidr .modal-body,.sidr .modal-footer{
+	padding: 5px;
+}
+
+.sidr .modal-exam-list{
+	padding: 0;
+}
+
+#sidrright{
+	background: #fff;
+	padding: 3px;
+}
+.sidr .modal-header{
+	padding-top: 20px;
+}
+
+#sidrright #modal-exams .horizontal.ranges-filter-admin li{
+	margin-left: 0;
+}
+
+.a-icon{
+padding: 7px 5px;
+margin-top: -4px;
+}
+
+.tabbable li.active a,.tabbable li.active a:hover{
+	color: #ee7500;
+}
+
+
+.nav-tabs > li > a:hover{
+	background: none;
+	border-color: #fff;
+	border-bottom-color: #DDD;
+}
+
+/*
+.nav-tabs > li > a:active{
+	background-color: #EEE;
+	border-bottom-color: rgba(0, 0, 0, 0);
+}
+*/
+
+/* Absences */
+#search-content-abs{
+	margin-top: 0;
+}
+
+.table-striped tbody > tr > td small{
+	color: #555;
+	line-height: 13px;
+}
+
+/* toastr */
+
+#toast-container {
+	width: 100%;
+}
+
+#toast-container > div {
+	padding: 15px 15px 15px 60px;
+	width: 100%;
+	background-position-x: 23px;
+}
+
+#tbl_absences .open > .dropdown-menu {
+	max-width: 100%;
+	width: auto;
+	height: auto;
+	right: 10px;
+	margin: 0;
+	margin-top: 44px;
+	display: inline-block;
+	padding: 0 10px;
+}
+
+#tbl_absences .open > .dropdown-menu li{
+	float: left;
+	padding: 5px 0;
+}
+
+#tbl_absences .open > .dropdown-menu li > a {
+display: block;
+padding: 10px 10px;
+background: none;
+color: #ec7500;
+}
+
+.tc-logo-small {
+background: url("../img/TEGO-CLASS-Logo-footer.png");
+height: 15px;
+width: 141px;
+background-repeat: no-repeat;
+margin: 0 auto;
+margin-bottom: 10px;
+}
+
+
+
+/* Optionen für Retina Displays*/
+@media only screen and (min--moz-device-pixel-ratio: 2),
+only screen and (-o-min-device-pixel-ratio: 2/1),
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (min-device-pixel-ratio: 2){
+
+	h1.logo a {
+		background-image: url(../img/TEGO-CLASS-Logo2x.png);
+		background-position: center;
+		-webkit-background-size: 285px 27px;
+	}
+	
+	.head-icon {
+	    background-image: url(../img/head-icons2x.png);
+	    -webkit-background-size: 92px 30px;
+	}
+	
+	.absences-icon{
+		background-position: -33px 0;
+		width: 30px;
+		height: 30px;
+	}
+	
+	.grades-icon{
+		background-position: -63px 0;
+	}
+
+	.tc-logo-small{
+		background: url("../img/TEGO-CLASS-Logo-footer2x.png");
+		-webkit-background-size: 141px 15px;
+	}
+	
+}
+
+/* Doc Archives */
+
+.stream .item {
+	padding: 10px 6px;
+	padding-bottom: 23px;
+}
+
+ul.stats{
+	text-align: center;
+	padding: 15px 0;
+	padding-top: 17px;
+	margin: 0;
+	background: #F7F7F7;
+}
+
+.stats li.items {
+	margin: 0;
+	list-style: none;
+	display: inline-block;
+	padding: 0 6px;
+}
+
+.stats li:first-child.items {
+	padding: 0 6px 0 0;
+}
+.stats li:last-child.items {
+	padding: 0 0 0 6px;
+}
+
+.stats li.items h6{
+	font-size: 11px;
+	margin: 0;
+}
+
+.stream .item p {
+	text-align: justify;
+	padding-top: 10px;
+}
+
+.stream .item:hover{
+	background: none;
+}
+.stream .item:focus{
+	background: #F5F5F5;
+}
+
+.stats .items .badge {
+	background: none;
+	font-size: 20px;
+	text-shadow: 1px 1px 1px #fff;
+}
+
+.stats .items .badge.badge-success {
+	color: #468847;
+}
+
+.stats .items .badge.badge-important {
+	color: #DA4F49;
+}
+
+.stats .items .badge.badge-inverse {
+	color: #000;
+}
+
+
+
+.archive-date {
+	text-align: center;
+	float: left;
+	padding: 0 15px;
+}
+
+.archive-month {
+	font-size: 12px;
+	color: #EE7510;
+	font-weight: bold;
+}
+
+.archive-day {
+	font-weight: 600;
+	font-size: 23px;
+}
+
+.archive-lesson {
+	line-height: 17px;
+	padding-bottom: 5px;
+}
+
+li.change-class {
+	padding: 12px 5px;
+}
+
+.page-wrap {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -105px; 
+}
+.page-wrap:after {
+  content: "";
+  display: block;
+}
+
+.copyright, .page-wrap:after {
+  /* .push must be the same height as footer */
+  height: 105px; 
+}
