@@ -102,7 +102,7 @@
     -->
     
     <!-- Define Plugins -->
-    <gap:plugin name="com.adobe.plugins.fastcanvas" />
+    <!-- <gap:plugin name="com.adobe.plugins.fastcanvas" /> -->
     
     
     <access origin="*"/> <!-- allow local pages -->
