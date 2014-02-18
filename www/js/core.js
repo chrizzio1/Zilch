@@ -22,10 +22,7 @@ $(document).ready(function()
 		});
 		
 		// Show Opporturnities
-		showPossibilities();
-		
-		
-/* 		checkRules();  */
+		showPossibilities();			
 		
 	});
 
@@ -133,7 +130,6 @@ function showPossibilities() {
 				// Die Fünf (1x Fünf = 50 Pkt.)
 				else if(i == 5 && $numberOf > 0 && $numberOf < 3){
 					possibilityDescription = $numberOf + " " + (($numberOf > 1) ? "Fünfen:" : "Fünf:") + " " + 50*$numberOf + " Punkte";
-					/* $possibilites.push($numberOf + " " + (($numberOf > 1) ? "Fünfen:" : "Fünf:") + " " + 50*$numberOf + " Punkte");	 */
 				}
 			}	
 			if(possibilityDescription!=0){
@@ -143,7 +139,7 @@ function showPossibilities() {
 		
 		// SPECIAL RULES
 		
-		// Alle Zahlen von 1 - 6 
+		// Straße (Alle Zahlen von 1 - 6) : 1500 Pkt.
 		var singleDices = 0;
 		for(var i=0;i<=6;i++){
 			// Kommt jede Zahl nur 1x vor?
