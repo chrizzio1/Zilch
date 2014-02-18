@@ -66,7 +66,7 @@ function blockSelectedDices(){
 	});
 }
 
-// Ermittelt die Anzahl, wie oft eine bestimmte Zahl gew�rfelt wurde
+// Ermittelt die Anzahl, wie oft eine bestimmte Zahl gewürfelt wurde
 function numberOf( $number ){
 	var $count = 0;
 	$.each( $points, function( key, value ) {
@@ -80,12 +80,14 @@ function numberOf( $number ){
 // show the possible Dice Combinations
 function showOpporturnities() { 		
 		
+/*
 		var numberOfOnes = numberOf(1);
 		var numberOfTwos = numberOf(2);
 		var numberOfThrees = numberOf(3);
 		var numberOfFours = numberOf(4);
 		var numberOfFives = numberOf(5);
-		var numberOfSixes = numberOf(6); 		
+		var numberOfSixes = numberOf(6); 
+*/		
 
 		var $possibilites = new Array();
 		
@@ -104,14 +106,13 @@ function showOpporturnities() {
 					$possibilites.push($numberOf + " " + (($numberOf > 1) ? "Einsen:" : "Eins:") + " " + 100*$numberOf + " Punkte");	
 				}
 			} else{			
-
-				if($numberOf >= 3){
-					$possibilites.push($numberOf + " " + "Einsen:" + " " + 1000*($numberOf-2) + " Punkte");	
-				}
 				
-
-				if($numberOf > 0 && $numberOf < 3){
-					$possibilites.push($numberOf + " " + (($numberOf > 1) ? "Einsen:" : "Eins:") + " " + 100*$numberOf + " Punkte");	
+				// Mindestens 3 x (zwei, drei, vier, fünf oder sechs) 
+				if($numberOf >= 3){
+					$possibilites.push($numberOf + " mal die " + i + ": " + 100*i*($numberOf-2) + " Punkte");	
+				}
+				else if(i == 5 & $numberOf > 0 && $numberOf < 3){
+					$possibilites.push($numberOf + " " + (($numberOf > 1) ? "Fünfen:" : "Fünf:") + " " + 50*$numberOf + " Punkte");	
 				}
 			}
 			

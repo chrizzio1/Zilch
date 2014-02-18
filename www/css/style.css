@@ -3,8 +3,14 @@
 	content: "";
 	width: 34px;
 	height: 34px;
+	margin: 5px;
+	box-shadow: 1px 1px 1px rgba(211, 211, 211, 0.77),1px 1px 1px rgba(255, 255, 255, 0.48) inset;
 }
 
 .dice.btn-info{
 	background: #46b8da;
+}
+
+.btn.possibility{
+	margin-bottom: 10px;
 }
