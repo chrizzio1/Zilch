@@ -11,7 +11,7 @@ $(document).ready(function()
 	{			
 		
 		blockSelectedDices();
-		rollDices($points);
+		rollDices($points);	
 				
 		// update view of the dices
 		$.each( $points, function( key, value ) {
@@ -77,7 +77,8 @@ function numberOf( $number ){
 	return $count;
 }
 
-function showOpporturnities() { 		// show the opportunities
+// show the possible Dice Combinations
+function showOpporturnities() { 		
 		
 		var numberOfOnes = numberOf(1);
 		var numberOfTwos = numberOf(2);
@@ -88,13 +89,36 @@ function showOpporturnities() { 		// show the opportunities
 
 		var $possibilites = new Array();
 		
-		if(numberOfOnes == 3){
-			$possibilites.push("Drei einsen: " + "1000");	
+		for(var i=0;i<6;i++){
+			var $numberOf = numberOf(i);
+			
+			// Ones
+			if(i == 1){
+				// Drei oder mehr * 1
+				if($numberOf >= 3){
+					$possibilites.push($numberOf + " " + "Einsen:" + " " + 1000*($numberOf-2) + " Punkte");	
+				}
+				
+				// X * 1
+				if($numberOf > 0 && $numberOf < 3){
+					$possibilites.push($numberOf + " " + (($numberOf > 1) ? "Einsen:" : "Eins:") + " " + 100*$numberOf + " Punkte");	
+				}
+			} else{			
+
+				if($numberOf >= 3){
+					$possibilites.push($numberOf + " " + "Einsen:" + " " + 1000*($numberOf-2) + " Punkte");	
+				}
+				
+
+				if($numberOf > 0 && $numberOf < 3){
+					$possibilites.push($numberOf + " " + (($numberOf > 1) ? "Einsen:" : "Eins:") + " " + 100*$numberOf + " Punkte");	
+				}
+			}
+			
+
 		}
-		if(numberOfOnes > 0 && numberOfOnes < 3){
-			$possibilites.push(numberOfOnes + " " + ((numberOfOnes > 1) ? "Einsen:" : "Eins:") + " " + 100*numberOfOnes + " Punkte");	
-		}
-		
+				
+		/* Show Possibilities */
 		$(".possibility").html("");
 		$.each( $possibilites, function( key, value ) {			
 			$(".possibility").html($(".possibility").html() + "<br />" + "<div class='btn btn-default possibility'>" + value + '</div>');
