@@ -18,7 +18,7 @@ $(document).ready(function()
 		});
 		
 		// Show Opporturnities
-		showOpporturnities();
+		showPossibilities();
 		
 		
 /* 		checkRules();  */
@@ -36,6 +36,25 @@ $(document).ready(function()
 		}
 
 	});
+	
+	// select / deselect a possibility
+	$(document).on("click",".possibility",function () 
+	{			
+		var number = $(this).attr("number");
+		var die = $(this).attr("die");
+	
+		if($(this).hasClass("btn-info")){
+			$(this).removeClass("btn-info");
+			deselectDicesFromPossibility(number, die);
+		}else{
+			$(this).addClass("btn-info");			
+			selectDicesFromPossibility(number, die);
+					
+		}
+
+	});
+	
+	
 	
 });
 
@@ -77,33 +96,29 @@ function numberOf( $number ){
 }
 
 // show the possible Dice Combinations
-function showOpporturnities() { 		
+function showPossibilities() { 		
 		
-/*
-		var numberOfOnes = numberOf(1);
-		var numberOfTwos = numberOf(2);
-		var numberOfThrees = numberOf(3);
-		var numberOfFours = numberOf(4);
-		var numberOfFives = numberOf(5);
-		var numberOfSixes = numberOf(6); 
-*/		
-
 		var $possibilites = new Array();
+		var possibilityDescription = "";
+		
+		$(".possibilities").html("");
+		$(".possibility").html("");
 		
 		// STANDARD RULES
 		for(var i=0;i<=6;i++){
 			var $numberOf = numberOf(i);
+			var possibilityDescription = 0;
 			
 			// Ones
 			if(i == 1){
 				// Drei oder mehr * 1
 				if($numberOf >= 3){
-					$possibilites.push($numberOf + " " + "Einsen:" + " " + 1000*($numberOf-2) + " Punkte");	
+					possibilityDescription = $numberOf + " " + "Einsen:" + " " + 1000*($numberOf-2) + " Punkte";	
 				}
 				
 				// X * 1
 				if($numberOf > 0 && $numberOf < 3){
-					$possibilites.push($numberOf + " " + (($numberOf > 1) ? "Einsen:" : "Eins:") + " " + 100*$numberOf + " Punkte");	
+					possibilityDescription = $numberOf + " " + (($numberOf > 1) ? "Einsen:" : "Eins:") + " " + 100*$numberOf + " Punkte";	
 				}				
 			} 
 			// Other Number than Ones
@@ -111,13 +126,17 @@ function showOpporturnities() {
 				
 				// Mindestens 3 x (zwei, drei, vier, fünf oder sechs) (3 x zwei = 200; 4 x zwei = 400)
 				if($numberOf >= 3){
-					$possibilites.push($numberOf + " mal die " + i + ": " + 100*i*($numberOf-2) + " Punkte");	
+					possibilityDescription = $numberOf + " mal die " + i + ": " + 100*i*($numberOf-2) + " Punkte";	
 				} 
 				// Die Fünf (1x Fünf = 50 Pkt.)
-				else if(i == 5 & $numberOf > 0 && $numberOf < 3){
-					$possibilites.push($numberOf + " " + (($numberOf > 1) ? "Fünfen:" : "Fünf:") + " " + 50*$numberOf + " Punkte");	
+				else if(i == 5 && $numberOf > 0 && $numberOf < 3){
+					possibilityDescription = $numberOf + " " + (($numberOf > 1) ? "Fünfen:" : "Fünf:") + " " + 50*$numberOf + " Punkte";
+					/* $possibilites.push($numberOf + " " + (($numberOf > 1) ? "Fünfen:" : "Fünf:") + " " + 50*$numberOf + " Punkte");	 */
 				}
-			}			
+			}	
+			if(possibilityDescription!=0){
+				addPossibility($numberOf,i,possibilityDescription);
+			}
 		}
 		
 		// SPECIAL RULES
@@ -134,12 +153,6 @@ function showOpporturnities() {
 			}
 		}
 				
-		/* Show Possibilities */
-		$(".possibility").html("");
-		$.each( $possibilites, function( key, value ) {			
-			$(".possibility").html($(".possibility").html() + "<br />" + "<div class='btn btn-default possibility'>" + value + '</div>');
-	});
-	
 	
 }
 
@@ -151,4 +164,29 @@ function isDiceSelected($key) {
 	} else{
 		return false;
 	}	
+}
+
+function addPossibility(numberOf, die, text) { 
+	$(".possibilities").html($(".possibilities").html() + "<br />" + "<button number='"+numberOf+"' die='"+die+"' class='btn btn-default possibility'>" + text + '</button>');
+
+ }
+ 
+function selectDicesFromPossibility(number, die) { 
+
+	$.each( $points, function( key, value ) {
+		if(value == die ){
+			$(".dice-"+(key+1)).addClass("btn-info");			
+		}
+	});	
+	
+}
+
+function deselectDicesFromPossibility(number, die) { 
+
+	$.each( $points, function( key, value ) {
+		if(value == die ){
+			$(".dice-"+(key+1)).removeClass("btn-info");			
+		}
+	});	
+	
 }
