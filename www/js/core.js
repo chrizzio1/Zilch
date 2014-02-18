@@ -9,11 +9,9 @@ $(document).ready(function()
 	// tap on roll 
 	$(document).on("click","#roll",function () 
 	{			
-		
 		blockSelectedDices();
 		rollDices($points);	
 
-		$points = new Array(1,2,3,4,5,6);
 		// update view of the dices
 		$.each( $points, function( key, value ) {
 			$(".dice-"+(key+1)).html(value);
