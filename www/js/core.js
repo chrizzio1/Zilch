@@ -12,7 +12,8 @@ $(document).ready(function()
 		
 		blockSelectedDices();
 		rollDices($points);	
-				
+
+		$points = new Array(1,2,3,4,5,6);
 		// update view of the dices
 		$.each( $points, function( key, value ) {
 			$(".dice-"+(key+1)).html(value);
@@ -91,7 +92,8 @@ function showOpporturnities() {
 
 		var $possibilites = new Array();
 		
-		for(var i=0;i<6;i++){
+		// STANDARD RULES
+		for(var i=0;i<=6;i++){
 			var $numberOf = numberOf(i);
 			
 			// Ones
@@ -104,19 +106,34 @@ function showOpporturnities() {
 				// X * 1
 				if($numberOf > 0 && $numberOf < 3){
 					$possibilites.push($numberOf + " " + (($numberOf > 1) ? "Einsen:" : "Eins:") + " " + 100*$numberOf + " Punkte");	
-				}
-			} else{			
+				}				
+			} 
+			// Other Number than Ones
+			else{			
 				
-				// Mindestens 3 x (zwei, drei, vier, fünf oder sechs) 
+				// Mindestens 3 x (zwei, drei, vier, fünf oder sechs) (3 x zwei = 200; 4 x zwei = 400)
 				if($numberOf >= 3){
 					$possibilites.push($numberOf + " mal die " + i + ": " + 100*i*($numberOf-2) + " Punkte");	
-				}
+				} 
+				// Die Fünf (1x Fünf = 50 Pkt.)
 				else if(i == 5 & $numberOf > 0 && $numberOf < 3){
 					$possibilites.push($numberOf + " " + (($numberOf > 1) ? "Fünfen:" : "Fünf:") + " " + 50*$numberOf + " Punkte");	
 				}
-			}
-			
+			}			
+		}
+		
+		// SPECIAL RULES
+		
+		// Alle Zahlen von 1 - 6 
+		for(var i=0;i<=6;i++){
+			// Kommt jede Zahl nur 1x vor?
+			if(numberOf(i)==1){
+				// Kommen alle Zahlen nur 1x vor?
+				if(i==6){
+					$possibilites.push("Straße (1 bis 6) : 1500 Punkte.");	
 
+				}
+			}
 		}
 				
 		/* Show Possibilities */
