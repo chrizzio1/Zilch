@@ -12,6 +12,10 @@ $(document).ready(function()
 		blockSelectedDices();
 		rollDices($points);	
 
+		//Test
+		//alle
+		/* $points = new Array(1,2,3,4,5,6); */
+		
 		// update view of the dices
 		$.each( $points, function( key, value ) {
 			$(".dice-"+(key+1)).html(value);
@@ -23,7 +27,6 @@ $(document).ready(function()
 		
 /* 		checkRules();  */
 		
-
 	});
 
 	// select / deselect a dice
@@ -102,7 +105,6 @@ function showPossibilities() {
 		var possibilityDescription = "";
 		
 		$(".possibilities").html("");
-		$(".possibility").html("");
 		
 		// STANDARD RULES
 		for(var i=0;i<=6;i++){
@@ -142,13 +144,15 @@ function showPossibilities() {
 		// SPECIAL RULES
 		
 		// Alle Zahlen von 1 - 6 
+		var singleDices = 0;
 		for(var i=0;i<=6;i++){
 			// Kommt jede Zahl nur 1x vor?
 			if(numberOf(i)==1){
+				singleDices++;
 				// Kommen alle Zahlen nur 1x vor?
-				if(i==6){
-					$possibilites.push("Straße (1 bis 6) : 1500 Punkte.");	
-
+				if(singleDices==6){
+					$(".possibilities").html("");
+					addPossibility($numberOf,"all","Straße (1 bis 6) : 1500 Punkte.");	
 				}
 			}
 		}
@@ -172,6 +176,12 @@ function addPossibility(numberOf, die, text) {
  }
  
 function selectDicesFromPossibility(number, die) { 
+	
+	if(die=="all"){
+		$.each( $points, function( key, value ) {
+				$(".dice-"+(key+1)).addClass("btn-info");			
+		});	
+	}
 
 	$.each( $points, function( key, value ) {
 		if(value == die ){
@@ -182,6 +192,12 @@ function selectDicesFromPossibility(number, die) {
 }
 
 function deselectDicesFromPossibility(number, die) { 
+
+	if(die=="all"){
+		$.each( $points, function( key, value ) {
+			$(".dice-"+(key+1)).removeClass("btn-info");			
+		});	
+	}
 
 	$.each( $points, function( key, value ) {
 		if(value == die ){
