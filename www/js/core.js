@@ -152,12 +152,14 @@ function showPossibilities() {
 				}
 			}
 		}
-				
+		
+		// @TODO Sonderregeln hinzufügen
+		// Keine Punkte im 1. Wurf
+		// ...
 	
 }
 
-
-
+// Prüfung, ob Würfel schon aktiviert wurde
 function isDiceSelected($key) { 
 	if($(".dice-"+($key)).hasClass("btn-info")){
 		return true;
@@ -171,6 +173,7 @@ function addPossibility(numberOf, die, text) {
 
  }
  
+// Bei Auswahl eines Vorschlages werden entsprechende Würfel gewählt
 function selectDicesFromPossibility(number, die) { 
 	
 	if(die=="all"){
@@ -187,6 +190,7 @@ function selectDicesFromPossibility(number, die) {
 	
 }
 
+// Bei Abwahl eines Vorschlages werden entsprechende Würfel deaktiviert
 function deselectDicesFromPossibility(number, die) { 
 
 	if(die=="all"){
