@@ -1,60 +1,83 @@
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
-        <title>Zilch</title>
-    </head> 
-    <body> 
-        
-        <h1>Zilch</h1>        
-        <div class="main center-block" style="padding:5px;">        
-        	<!-- Dices -->
-        	<div class="dices well" style="text-align:center;padding:5px;">
-	        	<div class="btn dice dice-1"></div>
-	        	<div class="btn dice dice-2"></div>
-	        	<div class="btn dice dice-3"></div>
-	        	<div class="btn dice dice-4"></div>
-	        	<div class="btn dice dice-5"></div>
-	        	<div class="btn dice dice-6"></div>
-        	</div>        	
-        	
-        	<div class="row">
-			  <div class="col-xs-6">
-			  	<button type="button" class="btn btn-primary btn-lg btn-block" id="take" >0</button>
-			  </div>
-			  <div class="col-xs-6">
-			  	<button type="button" class="btn btn-success btn-lg btn-block" id="roll" >Roll</button>
-			  </div>
-			</div>
+<html ng-app="zilch">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <title>Zilch</title>
+</head>
+<body ng-controller="GameController">
 
-        	<br/>
-        	
-        	<div class="well">
-	        	<h2>Possibilities:</h2>
-	        	<div class="possibilities">
-		        	
-	        	</div>
-        	</div>        
-        	<div class="scoreboard">
-        		<div class="score-1">
-        		
-        		</div>
-        	</div>	
-        	        
+<h1>Zilch</h1>
+
+<div class="main center-block" style="padding:5px;">
+    <!-- Dices -->
+    <div class="dices well" style="text-align:center;padding:5px;">
+        <div ng-repeat="dice in dices"
+             ng-class="{'btn-default': dice.blocked === 0, 'btn-info': dice.blocked === 1, 'btn-danger': dice.blocked > 1}"
+             class="btn dice">{{dice.number}}
+                              <!--ng-click="dice.number ? dice.blocked = !dice.blocked : noop"-->
         </div>
-        
-    <script type="text/javascript" src="phonegap.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <button ng-click="take()"
+                    ng-disabled="actualScore < minTakeAmount"
+                    type="button"
+                    class="btn btn-primary btn-lg btn-block">Take {{actualScore}}
+            </button>
+        </div>
+        <div class="col-xs-6">
+            <button ng-show="!zilch"
+                    ng-click="roll()"
+                    ng-disabled="!rollEnabled()"
+                    type="button"
+                    class="btn btn-success btn-lg btn-block">Roll
+            </button>
+            <button ng-show="zilch"
+                    ng-click="roll()"
+                    ng-disabled="!rollEnabled()"
+                    type="button"
+                    class="btn btn-danger btn-lg btn-block">ZIIIIILCH JUNGE
+            </button>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="well">
+        <h2>Possibilities:</h2>
+
+        <div class="possibilities">
+            <button class="btn {{isPossibilitySelected(possibility)? 'btn-info' : 'btn-default'}}"
+                    ng-repeat-start="possibility in possibilities"
+                    ng-click="toggle(possibility)">
+                {{possibility.description}} (<strong>{{possibility.score}}</strong>)
+            </button>
+            <div ng-if="!$last" ng-repeat-end>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="scoreboard">
+        <div>Round: {{round}}</div>
+        <div>Score: {{totalScore}}</div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="phonegap.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/angular/angular.js"></script>
+<!--<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>-->
+<!--<script type="text/javascript" src="js/bootstrap.min.js"></script>-->
 <!--     <script type='application/javascript' src='js/fastclick.js'></script> -->
-    <script type="text/javascript" src="js/core.js"></script>
-    <script type="text/javascript">
-        app.initialize();
-    </script>
-    </body>
+<script type="text/javascript" src="js/core.js"></script>
+<script type="text/javascript">
+    app.initialize();
+</script>
+</body>
 </html>

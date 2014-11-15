@@ -1,265 +1,255 @@
-var $points = new Array(0, 0, 0, 0, 0, 0);
-var round = 0;
+(function () {
+    angular.module('zilch', [])
+        .constant('diceCount', 6)
+        .constant('minTakeAmount', 350)
+        .constant('lang', {
+            1: {sg: 'one', pl: 'ones'},
+            2: {sg: 'two', pl: 'twos'},
+            3: {sg: 'three', pl: 'threes'},
+            4: {sg: 'four', pl: 'fours'},
+            5: {sg: 'five', pl: 'fives'},
+            6: {sg: 'six', pl: 'sixes'},
+            pair: {sg: 'pair', pl: 'pairs'},
+            run: {sg: 'run', pl: 'runs'},
+            noScore: 'no scoring dice'
+        })
 
-/*
-* Wenn Document geladen
-*/
-$(document).ready(function() 
-{
-	
-	// tap on roll 
-	$(document).on("click","#roll",function () 
-	{			
-		
-		blockSelectedDices();
-		newRoll();
+        .controller('GameController', function ($scope, $filter, $log, diceCount, minTakeAmount) {
+            // Initialization
+            init();
 
-		//#####Test######
-		// run:
-		/* $points = new Array(1,2,3,4,5,6); */
-		// no scoring:
-		/* $points = new Array(2,2,3,4,4,6); */
-		
-		round++;
-	});
+            function init() {
+                $scope.round = 0;
+                $scope.actualScore = 0;
+                $scope.totalScore = 0;
+                $scope.minTakeAmount = minTakeAmount;
+                $scope.selections = [];
 
-	// select / deselect a dice
-	$(document).on("click",".dice",function () 
-	{			
-		if($(this).hasClass("btn-info")){
-			$(this).removeClass("btn-info");
-		}else{
-			$(this).addClass("btn-info");
-		}
-		
-	});
-	
-	// select / deselect a possibility
-	$(document).on("click",".possibility",function () 
-	{			
-		var number = $(this).attr("number");
-		var die = $(this).attr("die");
-	
-		if($(this).hasClass("btn-info")){
-			$(this).removeClass("btn-info");
-			deselectDicesFromPossibility(number, die);
-			subtractTake($(this).attr('points'));
-		}else{
-			$(this).addClass("btn-info");			
-			selectDicesFromPossibility(number, die);	
-			addTake($(this).attr('points'));						
-		}
-		
-	});
-	
-	$(document).on("click","#take",function () 
-	{
-		// TODO Punkte in Bank speichern
-	});
-	
-});
+                $scope.dices = [];
+                for (var i = 0; i < diceCount; i++) {
+                    $scope.dices.push({
+                        id: i,
+                        blocked: 0,     // 0 unblocked, 1 temporarily blocked, >1 blocked from last round
+                        number: undefined
+                    });
+                }
+            }
 
-// Addiert die gewählten Punkte zur möglichen Bank
-function addTake($takepoints){
-	$("#take").text(parseInt($("#take").text())+parseInt($takepoints));
-}
+            function allDicesBlocked() {
+                for (var i = 0, len = $scope.dices.length; i < len; i++) {
+                    if ($scope.dices[i].blocked === 0) {
+                        return false;
+                    }
+                }
+                return true;
+            }
 
-// Subtrahiert die gewählten Punkte zur möglichen Bank
-function subtractTake($takepoints){
-	$("#take").text(parseInt($("#take").text())-parseInt($takepoints));
-}
+            function unblockAllDices() {
+                for (var i = 0, len = $scope.dices.length; i < len; i++) {
+                    $scope.dices[i].blocked = 0;
+                }
+            }
 
-function nextRound(){
-	unlockAllDices();
-}
+            // Functions
+            $scope.roll = function () {
+                if (allDicesBlocked() || $scope.zilch) {
+                    unblockAllDices();
+                    $scope.zilch = false;
+                }
+                for (var i = 0, len = $scope.dices.length; i < len; i++) {
+                    var dice = $scope.dices[i];
+                    if (dice.blocked === 0) {
+                        dice.number = 1 + Math.floor(Math.random() * 6);
+                    } else {
+                        dice.blocked++;
+                    }
+                }
+
+                $scope.possibilities = $filter('possibilitiesFilter')($scope.dices);
+                if ($scope.possibilities.length === 0) {
+                    $scope.actualScore = 0;
+                    $scope.totalScore -= 500;
+                    $scope.zilch = true;
+                } else {
+                    $scope.round++;
+                }
+            };
+
+            $scope.take = function () {
+                if ($scope.actualScore >= minTakeAmount) {
+                    $scope.totalScore += $scope.actualScore;
+                    $scope.actualScore = 0;
+                    $scope.round = 0;
+                }
+                unblockAllDices();
+            };
+
+            $scope.toggle = function (possibility) {
+                var blockValue;
+                if ($scope.isPossibilitySelected(possibility)) {
+                    $scope.actualScore -= possibility.score;
+                    blockValue = 0;
+                } else {
+                    $scope.actualScore += possibility.score;
+                    blockValue = 1;
+                }
+
+                for (var i = 0, len = $scope.dices.length; i < len; i++) {
+                    if (possibility.ids.indexOf($scope.dices[i].id) !== -1) {
+                        $scope.dices[i].blocked = blockValue;
+                    }
+                }
+                $scope.possibilities = $filter('possibilitiesFilter')($scope.dices);
+            };
+
+            $scope.rollEnabled = function () {
+                if ($scope.zilch) {
+                    return true;
+                } else if ($scope.round > 0) {
+                    for (var i = 0, len = $scope.dices.length; i < len; i++) {
+                        if ($scope.dices[i].blocked === 1) {
+                            return true;
+                        }
+                    }
+                    return false
+                } else {
+                    return true;
+                }
+            };
+
+            $scope.isPossibilitySelected = function (possibility) {
+                for (var i = 0, len = possibility.ids.length; i < len; i++) {
+                    if ($scope.dices[possibility.ids[i]].blocked !== 1) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+        })
+        .filter('possibilitiesFilter', function ($log, lang, diceCount) {
+            return function (input) {
+
+                if (angular.isArray(input)) {
+                    var possibilities = [],
+                        activeDiceCount = 0;
+
+                    // map which stores diceIds to corresponding numbers
+                    var pointCounts = {
+                        1: [],
+                        2: [],
+                        3: [],
+                        4: [],
+                        5: [],
+                        6: []
+                    };
+
+                    // insert diceIds in map
+                    for (var i = 0, len = input.length; i < len; i++) {
+                        var dice = input[i];
+                        if (dice.blocked < 1) {
+                            pointCounts[dice.number].push(dice.id);
+                            activeDiceCount++;
+                        }
+                    }
+
+                    // set basic requirements for a run (1-2-3-4-5-6)
+                    var allRolled = activeDiceCount === diceCount,
+                        isRun = allRolled,
+                        isPairs = true;
 
 
-function unlockAllDices(){
-		$.each( $points, function( key, value ) {
-			$(".dice-"+(key+1)).removeClass("btn-info");			
-		});	
-		newRoll();
+                    angular.forEach(pointCounts, function (ids, number) {
+                        number = parseInt(number);
+                        var count = ids.length;
+                        switch (count) {
+                            case 6:
+                                possibilities.push(getSameNumberPossibility(ids, number, 6));
 
-}
+                            case 5:
+                                possibilities.push(getSameNumberPossibility(ids, number, 5));
 
-// roll all unselected dices
-function rollDices() { 
-	
-	$.each( $points, function( key, value ) {
-		if(value == 0){
-			$points[key] = roll();				
-		}
-		
-	});	
-	
-}
+                            case 4:
+                                possibilities.push(getSameNumberPossibility(ids, number, 4));
 
-function newRoll(){
-		rollDices($points);	
-		
-		// update view of the dices
-		$.each( $points, function( key, value ) {
-			$(".dice-"+(key+1)).html(value);
-		});
-		
-		// Show Opporturnities
-		showPossibilities();			
+                            case 3:
+                                possibilities.push(getSameNumberPossibility(ids, number, 3));
 
-}
+                            case 2:
+                                if (number === 1 || number === 5) {
+                                    var possibility = {};
+                                    possibility.ids = ids.slice(0, 2);
+                                    possibility.score = number === 1 ? 200 : 100;
+                                    possibility.description = lang[2].sg + ' ' + lang[number].sg;
+                                    possibilities.push(possibility);
+                                }
+                                isRun = false;
+                            case 1:
+                                if (number === 1 || number === 5) {
+                                    $log.debug(ids, number);
+                                    possibility = {};
+                                    possibility.ids = ids.slice(0, 1);
+                                    possibility.score = number === 1 ? 100 : 50;
+                                    possibility.description = (number === 1 ? 'an ' : 'a ') + lang[number].sg;
+                                    possibilities.push(possibility);
+                                }
 
-// random number from 1 - 6 
-function roll() { 		
-	return 1 + Math.floor(Math.random() * 6);
-}
-	
-// Prevent selected dices from beeing rolled
-function blockSelectedDices(){
-	$.each( $points, function( key, value ) {
-		if(!isDiceSelected(key+1)){
-			$points[key] = 0;			
-		}else{
-			$(".dice-"+(key+1)).attr("blocked","1");
-			$(".dice-"+(key+1)).attr( "disabled", true );
-		}
-	});
-}
+                            default:
+                                if (count !== 2) {
+                                    isPairs = false;
+                                }
+                                break;
+                        }
+                    });
 
-// Ermittelt die Anzahl, wie oft eine bestimmte Zahl gewürfelt wurde
-function numberOf( $number ){
-	var $count = 0;
-	$.each( $points, function( key, value ) {
-		if(value == $number && !isDiceSelected(key+1)){
-			$count++;
-		}
-	});
-	return $count;
-}
 
-// show the possible Dice Combinations
-function showPossibilities() { 		
-		
-		var $possibilites = new Array();
-		var possibilityDescription = "";
-		var $takepoints = 0;
-		$(".possibilities").html("");
-		
-		// STANDARD RULES
-		for(var i=0;i<=6;i++){
-			var $numberOf = numberOf(i);
-			var possibilityDescription = 0;
-			
-			// Ones
-			if(i == 1){
-				// Drei oder mehr * 1
-				if($numberOf >= 3){
-					$takepoints = 1000*($numberOf-2);
-					possibilityDescription = $numberOf + " " + "ones:" + " " + $takepoints + " points";	
-				}
-				
-				// X * 1
-				if($numberOf > 0 && $numberOf < 3){
-					$takepoints = 100*$numberOf;
-					possibilityDescription = $numberOf + " " + (($numberOf > 1) ? "ones:" : "one:") + " " + $takepoints + " points";	
-				}				
-			} 
-			// Other Number than Ones
-			else{			
-				
-				// Mindestens 3 x (zwei, drei, vier, fünf oder sechs) (3 x zwei = 200; 4 x zwei = 400)
-				if($numberOf >= 3){
-					$takepoints = 100*i*($numberOf-2);
-					possibilityDescription = $numberOf + " times the " + i + ": " + $takepoints + " points";	
-				} 
-				// Die Fünf (1x Fünf = 50 Pkt.)
-				else if(i == 5 && $numberOf > 0 && $numberOf < 3){
-					$takepoints = 50*$numberOf;
-					possibilityDescription = $numberOf + " " + (($numberOf > 1) ? "fives:" : "five:") + " " + $takepoints + " points";
-				}
-			}	
-			if(possibilityDescription!=0){
-				addPossibility($numberOf,i,possibilityDescription,$takepoints);				
-				
-			}
-		}
-		
-		// SPECIAL RULES
-		
-		// Straße (Alle Zahlen von 1 - 6) : 1500 Pkt.
-		var singleDices = 0;
-		for(var i=0;i<=6;i++){
-			// Kommt jede Zahl nur 1x vor?
-			if(numberOf(i)==1){
-				singleDices++;
-				// Kommen alle Zahlen nur 1x vor?
-				if(singleDices==6){
-					$(".possibilities").html("");
-					addPossibility($numberOf,"all","Run (1 to 6) : 1500 Points.",1500);	
-				}
-			}
-		}
-		
-		// @TODO Sonderregeln hinzufügen
-		
-		// Keine Punkte im 1. Wurf
-		if(round == 0 && $(".possibilities").html()==""){
-			addPossibility($numberOf,"all","No scoring dice: 500",500);	
-		}
-		
-		// ZILCH
-		if(round >= 1 && $(".possibilities").html()==""){
-			addPossibility($numberOf,"zilch","ZILCH!",-500);	
-		}
-	
-}
+                    var possibility = {
+                        ids: [],
+                        description: '',
+                        score: 0
+                    };
+                    if (isPairs || isRun) {
+                        for (i = 0; i < activeDiceCount; i++) {
+                            possibility.ids.push(i);
+                            possibility.score = 1500;
+                        }
+                        possibility.description = isPairs ? (lang[3].sg + ' ' + lang.pair.pl) : ('a ' + lang.run.sg);
+                        possibilities.push(possibility);
+                    }
 
-// Prüfung, ob Würfel schon aktiviert wurde
-function isDiceSelected($key) { 
-	if($(".dice-"+($key)).hasClass("btn-info")){
-		return true;
-	} else{
-		return false;
-	}	
-}
+                    if (allRolled && possibilities.length === 0) {
+                        for (i = 0; i < activeDiceCount; i++) {
+                            possibility.ids.push(i);
+                        }
+                        possibility.score = 500;
+                        possibility.description = lang.noScore;
+                        possibilities.push(possibility);
+                    }
 
-function addPossibility(numberOf, die, text, $takepoints) { 
-	$(".possibilities").html($(".possibilities").html() + "<br />" + "<button points='"+$takepoints+"' number='"+numberOf+"' die='"+die+"' class='btn btn-default possibility'>" + text + '</button>');
 
- }
- 
-// Bei Auswahl eines Vorschlages werden entsprechende Würfel gewählt
-function selectDicesFromPossibility(number, die) { 
-		
-	if(die=="zilch"){
-		nextRound();
-	}
-	
-	if(die=="all"){
-		$.each( $points, function( key, value ) {
-				$(".dice-"+(key+1)).addClass("btn-info");			
-		});	
-	}
+                    function getSameNumberPossibility(ids, number, count) {
+                        var possibility =
+                        {
+                            ids: ids.slice(0, count),
+                            description: lang[count].sg + ' ' + lang[number].pl
+                        };
 
-	$.each( $points, function( key, value ) {
-		if(value == die ){
-			$(".dice-"+(key+1)).addClass("btn-info");			
-		}
-	});	
-	
-}
+                        if (number === 1) {
+                            possibility.score = 1000;
+                        } else {
+                            possibility.score = 100 * number;
+                        }
 
-// Bei Abwahl eines Vorschlages werden entsprechende Würfel deaktiviert
-function deselectDicesFromPossibility(number, die) { 
+                        possibility.score = possibility.score * Math.pow(2, count - 3);
 
-	if(die=="all"){
-		$.each( $points, function( key, value ) {
-			$(".dice-"+(key+1)).removeClass("btn-info");			
-		});	
-	}
+                        return possibility;
+                    }
 
-	$.each( $points, function( key, value ) {
-		if(value == die ){
-			$(".dice-"+(key+1)).removeClass("btn-info");			
-		}
-	});	
-	
-}
+                    return possibilities;
+                }
+
+                return input;
+
+            };
+        }
+    )
+})();
