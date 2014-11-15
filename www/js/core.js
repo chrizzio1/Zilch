@@ -14,7 +14,7 @@
             noScore: 'no scoring dice'
         })
 
-        .controller('GameController', function ($scope, $filter, $log, diceCount, minTakeAmount) {
+        .controller('GameController', function ($scope, $filter, diceCount, minTakeAmount) {
             // Initialization
             init();
 
@@ -126,7 +126,7 @@
                 return true;
             };
         })
-        .filter('possibilitiesFilter', function ($log, lang, diceCount) {
+        .filter('possibilitiesFilter', function (lang, diceCount) {
             return function (input) {
 
                 if (angular.isArray(input)) {
@@ -180,16 +180,17 @@
                                     possibility.ids = ids.slice(0, 2);
                                     possibility.score = number === 1 ? 200 : 100;
                                     possibility.description = lang[2].sg + ' ' + lang[number].sg;
+                                    possibility.selected = false;
                                     possibilities.push(possibility);
                                 }
                                 isRun = false;
                             case 1:
                                 if (number === 1 || number === 5) {
-                                    $log.debug(ids, number);
                                     possibility = {};
                                     possibility.ids = ids.slice(0, 1);
                                     possibility.score = number === 1 ? 100 : 50;
                                     possibility.description = (number === 1 ? 'an ' : 'a ') + lang[number].sg;
+                                    possibility.selected = false;
                                     possibilities.push(possibility);
                                 }
 
@@ -205,13 +206,15 @@
                     var possibility = {
                         ids: [],
                         description: '',
-                        score: 0
+                        score: 0,
+                        selected: false
                     };
                     if (isPairs || isRun) {
                         for (i = 0; i < activeDiceCount; i++) {
                             possibility.ids.push(i);
-                            possibility.score = 1500;
                         }
+                        possibility.score = 1500;
+                        possibility.selected = false;
                         possibility.description = isPairs ? (lang[3].sg + ' ' + lang.pair.pl) : ('a ' + lang.run.sg);
                         possibilities.push(possibility);
                     }
@@ -221,6 +224,7 @@
                             possibility.ids.push(i);
                         }
                         possibility.score = 500;
+                        possibility.selected = false;
                         possibility.description = lang.noScore;
                         possibilities.push(possibility);
                     }
@@ -230,7 +234,8 @@
                         var possibility =
                         {
                             ids: ids.slice(0, count),
-                            description: lang[count].sg + ' ' + lang[number].pl
+                            description: lang[count].sg + ' ' + lang[number].pl,
+                            selected: false
                         };
 
                         if (number === 1) {

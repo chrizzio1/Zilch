@@ -7,6 +7,15 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <title>Zilch</title>
+
+    <script type="text/javascript" src="phonegap.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/angular/angular.js"></script>
+    <!--<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>-->
+    <!--<script type="text/javascript" src="js/bootstrap.min.js"></script>-->
+    <!--     <script type='application/javascript' src='js/fastclick.js'></script> -->
+    <script type="text/javascript" src="js/core.js"></script>
+
 </head>
 <body ng-controller="GameController">
 
@@ -30,18 +39,19 @@
                     class="btn btn-primary btn-lg btn-block">Take {{actualScore}}
             </button>
         </div>
-        <div class="col-xs-6">
-            <button ng-show="!zilch"
-                    ng-click="roll()"
+        <div ng-show="!zilch" class="col-xs-6">
+            <button ng-click="roll()"
                     ng-disabled="!rollEnabled()"
                     type="button"
                     class="btn btn-success btn-lg btn-block">Roll
             </button>
-            <button ng-show="zilch"
-                    ng-click="roll()"
+        </div>
+
+        <div ng-show="zilch" class="col-xs-6">
+            <button ng-click="roll()"
                     ng-disabled="!rollEnabled()"
                     type="button"
-                    class="btn btn-danger btn-lg btn-block">ZIIIIILCH JUNGE
+                    class="btn btn-danger btn-lg btn-block">ZILCH JUNGE!
             </button>
         </div>
     </div>
@@ -69,13 +79,6 @@
 
 </div>
 
-<script type="text/javascript" src="phonegap.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
-<script type="text/javascript" src="js/angular/angular.js"></script>
-<!--<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>-->
-<!--<script type="text/javascript" src="js/bootstrap.min.js"></script>-->
-<!--     <script type='application/javascript' src='js/fastclick.js'></script> -->
-<script type="text/javascript" src="js/core.js"></script>
 <script type="text/javascript">
     app.initialize();
 </script>
