@@ -146,7 +146,7 @@
                     // insert diceIds in map
                     for (var i = 0, len = input.length; i < len; i++) {
                         var dice = input[i];
-                        if (dice.blocked < 1) {
+                        if (dice.blocked < 2) {
                             pointCounts[dice.number].push(dice.id);
                             activeDiceCount++;
                         }
@@ -161,19 +161,27 @@
                     angular.forEach(pointCounts, function (ids, number) {
                         number = parseInt(number);
                         var count = ids.length;
+                        if (count !== 2) {
+                        	isPairs = false;
+                        }
+
                         switch (count) {
                             case 6:
                                 possibilities.push(getSameNumberPossibility(ids, number, 6));
-
+                                isRun = false;
+                                break;
                             case 5:
                                 possibilities.push(getSameNumberPossibility(ids, number, 5));
-
+                                isRun = false;
+                                break;
                             case 4:
                                 possibilities.push(getSameNumberPossibility(ids, number, 4));
-
+                                isRun = false;
+                                break;
                             case 3:
                                 possibilities.push(getSameNumberPossibility(ids, number, 3));
-
+                                isRun = false;
+                                break;
                             case 2:
                                 if (number === 1 || number === 5) {
                                     var possibility = {};
@@ -184,6 +192,7 @@
                                     possibilities.push(possibility);
                                 }
                                 isRun = false;
+                                break;
                             case 1:
                                 if (number === 1 || number === 5) {
                                     possibility = {};
@@ -192,11 +201,6 @@
                                     possibility.description = (number === 1 ? 'an ' : 'a ') + lang[number].sg;
                                     possibility.selected = false;
                                     possibilities.push(possibility);
-                                }
-
-                            default:
-                                if (count !== 2) {
-                                    isPairs = false;
                                 }
                                 break;
                         }
