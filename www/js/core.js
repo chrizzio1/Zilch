@@ -70,6 +70,8 @@
                     $scope.actualScore = 0;
                     $scope.totalScore -= 500;
                     $scope.zilch = true;
+                    var audio = new Audio('sounds/zonksoundo_ffypolcs.mp3');
+                    audio.play();
                 } else {
                     $scope.round++;
                 }
